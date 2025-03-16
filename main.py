@@ -28,14 +28,15 @@ X_resampled, y_resampled = smote.fit_resample(X, y)
 X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42)
 
 param_grid = {
-    'max_depth': [2, 3],  
-    'min_samples_split': [30, 50, 70],  
-    'min_samples_leaf': [30, 40, 50],  
-    'ccp_alpha': [0.01, 0.05, 0.1, 0.2] 
+    'max_depth': [3, 4, 5],  
+    'min_samples_split': [20, 30, 50],  
+    'min_samples_leaf': [20, 30, 40],  
+    'ccp_alpha': [0.001, 0.005, 0.01]  
 }
 
 
-grid_search = GridSearchCV(tree.DecisionTreeClassifier(random_state=42, class_weight='balanced'), param_grid, cv=5, scoring='precision')
+
+grid_search = GridSearchCV(tree.DecisionTreeClassifier(random_state=42, class_weight={0: 1, 1: 2}), param_grid, cv=5, scoring='precision')
 grid_search.fit(X_train, y_train)
 
 best_dt = grid_search.best_estimator_
